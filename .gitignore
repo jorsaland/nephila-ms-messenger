@@ -1,0 +1,13 @@
+# Setup files
+*.env
+
+# Auto-generated files
+**/__pycache__/
+logs/
+.pid
+
+# Local files
+env/
+dist/
+local/
+local.py
