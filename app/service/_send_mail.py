@@ -7,6 +7,9 @@ import smtplib
 import ssl
 
 
+from nephila_logging import DebugLoggerManager
+
+
 from app.env_vars import EnvVars
 from app.validators import SendMailModel
 
@@ -14,6 +17,7 @@ from app.validators import SendMailModel
 from ._build_multipart import build_multipart
 
 
+@DebugLoggerManager.trace
 def send_mail(model: SendMailModel):
 
     """

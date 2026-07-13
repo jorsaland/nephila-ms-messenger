@@ -11,11 +11,15 @@ from email.mime.text import MIMEText
 import os
 
 
+from nephila_logging import DebugLoggerManager
+
+
 from app.exceptions import ServiceError
 from app.messages import response_msg_file_not_found
 from app.response_codes import response_code_file_not_found
 
 
+@DebugLoggerManager.trace
 def build_multipart(
     *,
     receiver_mail: (str|None) = None,
