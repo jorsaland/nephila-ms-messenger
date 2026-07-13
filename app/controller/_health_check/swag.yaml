@@ -1,0 +1,22 @@
+summary: verifies the app is running
+
+description: |
+  Responds successfully to verify whether the app is running or not.
+
+tags:
+- Health check
+
+responses:
+  200:
+    description: Successful verification.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+          - service
+          properties:
+            service:
+              type: string
+              description: The name of the service.
+              example: nephila-ms-messenger

@@ -1,0 +1,82 @@
+summary: sends a mail
+
+description: |
+  Sends a mail from Nephila's account.
+
+tags:
+- Mails
+
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - username
+          - password
+        properties:
+          sender_name:
+            type: string
+            description: The name to use for the sender.
+            minLength: 3
+            maxLength: 50
+            example: Nephila
+          subject:
+            type: string
+            description: The subject of the mail.
+            example: Logs report
+          message:
+            type: string
+            description: The body of the mail.
+            example: No logs found.
+          picture_path:
+            type: string
+            description: The path of the picture to attach.
+            example: my_picture.jpg
+          is_html:
+            type: boolean
+            description: Whether the message is in HTML format or not
+            example: true
+
+responses:
+  201:
+    description: Successful mail.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: A code that represents the operation result.
+              enum:
+              - successful_mail
+              example: successful_mail
+            message:
+              type: string
+              description: A summary of the operation result.
+              example: successful mail
+  400:
+    description: Payload validation error.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: A code that represents the error.
+              enum:
+              - bad_request
+              example: bad_request
+            message:
+              type: string
+              description: A summary of the error.
+              example: "username: field required | password: field required"

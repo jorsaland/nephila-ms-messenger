@@ -8,19 +8,13 @@ import ssl
 
 
 from app.env_vars import EnvVars
+from app.validators import SendMailModel
 
 
 from ._build_multipart import build_multipart
 
 
-def send_mail(
-    *,
-    sender_name: (str|None) = None,
-    subject: (str|None) = None,
-    message: (str|None) = None,
-    picture_path: (str|None) = None,
-    is_html: bool = False,
-):
+def send_mail(model: SendMailModel):
 
     """
     Sends an email.
@@ -28,11 +22,11 @@ def send_mail(
 
     multipart = build_multipart(
         receiver_mail = EnvVars.SENDER_MAIL,
-        sender_name = sender_name,
-        subject = subject,
-        message = message,
-        picture_path = picture_path,
-        is_html = is_html,
+        sender_name = model.sender_name,
+        subject = model.subject,
+        message = model.message,
+        picture_path = str(model.picture_path) if model.picture_path else None,
+        is_html = model.is_html,
     )
 
     context = ssl.create_default_context()

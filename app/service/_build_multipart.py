@@ -8,6 +8,13 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import os
+
+
+from app.exceptions import ServiceError
+from app.messages import response_msg_file_not_found
+from app.response_codes import response_code_file_not_found
+
 
 def build_multipart(
     *,
@@ -39,6 +46,11 @@ def build_multipart(
         main_part.attach(body_part)
 
     if picture_path:
+        if not os.path.exists(picture_path):
+            raise ServiceError(
+                code = response_code_file_not_found,
+                message = response_msg_file_not_found
+            )
         with open(picture_path, 'rb') as file:
             image_part = MIMEImage(file.read())
         image_part.add_header('Content-ID', '<image1>')
