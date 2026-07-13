@@ -36,10 +36,9 @@ def send_mail():
     assert isinstance(request.json, dict)
     model = SendMailModel(**request.json)
 
-    session_id = service.send_mail(model)
+    service.send_mail(model)
     response = APIResponse(
         code = response_code_successful_mail,
         message = response_msg_successful_mail,
-        data = {'session_id': session_id}
     )
     return response.make_json_response()
