@@ -25,7 +25,7 @@ def send_mail(model: SendMailModel):
     """
 
     multipart = build_multipart(
-        receiver_mail = EnvVars.SENDER_MAIL,
+        receiver_mail = EnvVars.RECEIVER_MAIL,
         sender_name = model.sender_name,
         subject = model.subject,
         message = model.message,
