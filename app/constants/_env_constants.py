@@ -7,6 +7,11 @@ mandatory_env_vars = [
     'APP_NAME',
     'LOGGING_LEVEL',
     'UTC_OFFSET',
+    'SMTP_HOST',
+    'SMTP_PORT',
+    'SENDER_MAIL',
+    'SENDER_PASSWORD',
+    'RECEIVER_MAIL'
 ]
 
 gunicorn_env_vars = [

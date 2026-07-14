@@ -39,6 +39,7 @@ class EnvVars:
     SMTP_PORT: str = ''
     SENDER_MAIL: str = ''
     SENDER_PASSWORD: str = ''
+    RECEIVER_MAIL: str = ''
 
 
     def __new__(cls, *args, **kwargs):
