@@ -1,0 +1,8 @@
+./dist/nephila_logging-0.2.0.tar.gz
+
+pydantic==2.12.5
+
+Flask==3.1.3
+flasgger==0.9.7.1
+
+waitress==3.0.2
