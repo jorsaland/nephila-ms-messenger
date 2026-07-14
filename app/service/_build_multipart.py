@@ -8,7 +8,7 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-import os
+from pathlib import Path
 
 
 from nephila_logging import DebugLoggerManager
@@ -26,7 +26,7 @@ def build_multipart(
     sender_name: (str|None) = None,
     subject: (str|None) = None,
     message: (str|None) = None,
-    picture_path: (str|None) = None,
+    picture_path: (Path|None) = None,
     is_html: bool = False,
 ):
 
@@ -50,15 +50,16 @@ def build_multipart(
         main_part.attach(body_part)
 
     if picture_path:
-        if not os.path.exists(picture_path):
+        if not picture_path.exists():
             raise ServiceError(
                 code = response_code_file_not_found,
                 message = response_msg_file_not_found
             )
-        with open(picture_path, 'rb') as file:
-            image_part = MIMEImage(file.read())
+        with picture_path.open('rb') as file:
+            image_bytes = file.read()
+        image_part = MIMEImage(image_bytes)
         image_part.add_header('Content-ID', '<image1>')
-        image_part.add_header('Content-Disposition', 'inline', filename=picture_path)
+        image_part.add_header('Content-Disposition', 'inline', filename=picture_path.name)
         main_part.attach(image_part)
 
     return main_part

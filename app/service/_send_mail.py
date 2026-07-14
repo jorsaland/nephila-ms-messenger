@@ -29,7 +29,7 @@ def send_mail(model: SendMailModel):
         sender_name = model.sender_name,
         subject = model.subject,
         message = model.message,
-        picture_path = str(model.picture_path) if model.picture_path else None,
+        picture_path = model.picture_path,
         is_html = model.is_html,
     )
 
