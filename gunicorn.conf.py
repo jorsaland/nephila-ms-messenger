@@ -8,9 +8,15 @@ import os, threading
 
 
 from gunicorn.arbiter import Arbiter
+from gunicorn.workers.gthread import ThreadWorker
 
 
-from nephila_logging import NotificationLoggerManager
+from nephila_logging import (
+    ControllerLoggerManager,
+    DebugLoggerManager,
+    ExceptionLoggerManager,
+    NotificationLoggerManager,
+)
 
 
 from app.builder import initialize_loggers
@@ -45,6 +51,18 @@ def run_at_start(logger: Logger, _: Arbiter):
         start_message += ' DOCKER and'
     start_message += f' GUNICORN server. PID: {process_id}, TID: {thread_id}'
     logger.info(start_message)
+
+
+def run_at_fork(_: Arbiter, __: ThreadWorker):
+
+    """
+    Is called inside the worker's process, right after it is forked from the master process.
+    """
+
+    ControllerLoggerManager.fork()
+    DebugLoggerManager.fork()
+    ExceptionLoggerManager.fork()
+    NotificationLoggerManager.fork()
 
 
 def run_at_exit(logger: Logger, _: Arbiter):
@@ -87,6 +105,7 @@ def main():
         'loglevel': 'debug',
         'on_starting': lambda server: run_at_start(logger, server),
         'on_exit': lambda server: run_at_exit(logger, server),
+        'post_fork': lambda server, worker: run_at_fork(server, worker),
     }
     globals().update(gunicorn_setup)
 
