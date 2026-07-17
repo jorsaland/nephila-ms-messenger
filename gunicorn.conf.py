@@ -3,7 +3,6 @@ Defines the function that configures the app with Gunicorn WSGI server.
 """
 
 
-from logging import Logger
 import os, threading
 
 
@@ -34,11 +33,14 @@ from app.exceptions import SetupError
 from app.messages import setup_msg_missing_gunicorn_env_vars
 
 
-def run_at_start(logger: Logger, _: Arbiter):
+def run_at_start(_: Arbiter):
 
     """
     Is called right before the master process is initialized.
     """
+
+    initialize_loggers()
+    logger = NotificationLoggerManager.get()
 
     process_id = str(os.getpid())
     thread_id = str(threading.get_native_id())
@@ -65,11 +67,14 @@ def run_at_fork(_: Arbiter, __: ThreadWorker):
     NotificationLoggerManager.fork()
 
 
-def run_at_exit(logger: Logger, _: Arbiter):
+def run_at_exit(_: Arbiter):
 
     """
     Is called right before the master process is terminated. 
     """
+
+    NotificationLoggerManager.stop() # stops the listener shared by all loggers
+    logger = NotificationLoggerManager.get()
 
     if os.path.exists(PID_FILE):
         os.remove(PID_FILE)
@@ -93,9 +98,6 @@ def main():
     if missing_vars:
         raise SetupError(setup_msg_missing_gunicorn_env_vars.format(', '.join(missing_vars)))
 
-    initialize_loggers()
-    logger = NotificationLoggerManager.get()
-
     host = ANYHOST if EnvVars.RUN_MODE == RUN_MODE_VALUE_DOCKER else LOCALHOST
     gunicorn_setup = {
         'bind': f'{host}:{EnvVars.PORT}',
@@ -103,9 +105,9 @@ def main():
         'workers': 1,
         'threads': int(EnvVars.THREADS),
         'loglevel': 'debug',
-        'on_starting': lambda server: run_at_start(logger, server),
-        'on_exit': lambda server: run_at_exit(logger, server),
+        'when_ready': lambda server: run_at_start(server),
         'post_fork': lambda server, worker: run_at_fork(server, worker),
+        'on_exit': lambda server: run_at_exit(server),
     }
     globals().update(gunicorn_setup)
 
