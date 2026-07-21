@@ -1,4 +1,4 @@
-./dist/nephila_logging-0.2.0.tar.gz
+./dist/nephila_logging-0.2.1.tar.gz
 
 pydantic==2.12.5
 

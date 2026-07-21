@@ -32,3 +32,7 @@
 ### 0.0.0
 
 - All the version features are developed.
+
+### 0.0.1
+
+- Nephila Logging is updated to last patch version `0.2.1`.
