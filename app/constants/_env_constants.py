@@ -29,4 +29,5 @@ SERVER_VALUE_FLASK = 'flask'
 SERVER_VALUE_GUNICORN = 'gunicorn'
 SERVER_VALUE_WAITRESS = 'waitress'
 
-RUN_MODE_VALUE_DOCKER = 'docker'
+RUN_MODE_VALUE_DOCKER = 'docker_run'
+RUN_MODE_VALUE_COMPOSE = 'docker_compose'

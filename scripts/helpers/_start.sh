@@ -32,7 +32,7 @@ if [[ " ${*} " == *" docker "* ]]; then
     docker run \
         --publish 127.0.0.1:$PORT:$PORT \
         --env-file .env \
-        --env RUN_MODE=docker \
+        --env RUN_MODE=docker_run \
         --name $APP_NAME \
         --mount type=bind,src=$PWD/logs,target=/usr/src/logs \
         --detach \

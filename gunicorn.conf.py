@@ -23,6 +23,7 @@ from app.constants import (
     ANYHOST,
     LOCALHOST,
     PID_FILE,
+    RUN_MODE_VALUE_COMPOSE,
     RUN_MODE_VALUE_DOCKER,
     SERVER_ENV,
     SERVER_VALUE_GUNICORN,
@@ -49,7 +50,7 @@ def run_at_start(_: Arbiter):
         file.write(process_id)
 
     start_message = 'Starting app with'
-    if EnvVars.RUN_MODE == RUN_MODE_VALUE_DOCKER:
+    if EnvVars.RUN_MODE in (RUN_MODE_VALUE_DOCKER, RUN_MODE_VALUE_COMPOSE):
         start_message += ' DOCKER and'
     start_message += f' GUNICORN server. PID: {process_id}, TID: {thread_id}'
     logger.info(start_message)

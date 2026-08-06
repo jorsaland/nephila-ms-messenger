@@ -25,9 +25,9 @@ try {
         docker run `
             --publish 127.0.0.1:${Env:PORT}:${Env:PORT} `
             --env-file .env `
-            --env RUN_MODE=docker `
+            --env RUN_MODE=docker_run `
             --name ${Env:APP_NAME} `
-            --mount type=bind,src="${PWD}"/logs,target=/usr/src/logs `
+            --mount type=bind,src="${PWD}/logs,target=/usr/src/logs" `
             --detach `
             ${Env:APP_NAME}
 
