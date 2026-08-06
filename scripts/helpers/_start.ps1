@@ -28,6 +28,7 @@ try {
             --env RUN_MODE=docker_run `
             --name ${Env:APP_NAME} `
             --mount type=bind,src="${PWD}/logs,target=/usr/src/logs" `
+            --mount type=bind,src="${PWD}/../../api-gateway/static,target=/usr/src/static" `
             --detach `
             ${Env:APP_NAME}
 

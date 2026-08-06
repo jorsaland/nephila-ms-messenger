@@ -35,6 +35,7 @@ if [[ " ${*} " == *" docker "* ]]; then
         --env RUN_MODE=docker_run \
         --name $APP_NAME \
         --mount type=bind,src=$PWD/logs,target=/usr/src/logs \
+        --mount type=bind,src=$PWD/../../api-gateway/static,target=/usr/src/static \
         --detach \
         $APP_NAME
 
